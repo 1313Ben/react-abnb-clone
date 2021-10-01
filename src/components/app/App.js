@@ -1,7 +1,27 @@
 import './App.scss';
 import Flat from '../flat/Flat';
+import { useState, useEffect } from 'react';
+
+
+const API_URL = "https://raw.githubusercontent.com/lewagon/flats-boilerplate/master/flats.json";
 
 const App = () => {
+
+  const [flats, setFlats] = useState([]);
+  const [status, setStatus] = useState(false);
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then(data => data.json())
+      .then(json => {
+        console.log("Setting the flats")
+        console.log(json)
+        setFlats(json)
+      });
+  }, [status])
+  // triggerhelper to fetch data -> everytime when status changes it will fetch
+  // Emptyarray enable run the useEffect only once, otherwise infinity loop without an array
+
   return (
     <div className="app">
       
@@ -9,11 +29,12 @@ const App = () => {
         <input className="search" />
         
         <div className="flats">
-          <Flat name="My Flat" price={300} image="https://images.unsplash.com/photo-1494475673543-6a6a27143fc8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"/>
-          <Flat name="My Flat" price={200} image="https://images.unsplash.com/photo-1494475673543-6a6a27143fc8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"/>
-          <Flat name="My Flat" price={100} image="https://images.unsplash.com/photo-1494475673543-6a6a27143fc8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=687&q=80"/>
+          {flats.map((flat) => {
+            return <Flat key={flat.id} {...flat} />
+          })}
         </div>
 
+        <button onClick={() => setStatus(!status)}>Fetch FLATS!</button>
         <div className="map">
         </div>
 
