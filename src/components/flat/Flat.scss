@@ -1,6 +1,7 @@
 .flat {
-  flex-basis: calc(50% - 20px);
+  flex-basis: calc(50% - 24px);
   margin: 10px;
+  border: 2px solid white;
 
   .flat-picture {
     height: 200px;
@@ -11,5 +12,14 @@
 
   .flat-title {
     margin-top: 10px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    opacity: .6;
+  }
+
+  &.selected {
+    border-color: red;
   }
 }

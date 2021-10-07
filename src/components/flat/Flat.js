@@ -1,8 +1,11 @@
 import './Flat.scss';
+import clsx from 'clsx';
 
-const Flat = ({ name, price, priceCurrency = 'EUR', imageUrl }) => {
+const Flat = ({ id, name, price, priceCurrency = 'EUR', imageUrl, handleSelect, selected }) => {
+  const classes = clsx({ flat: true, selected: selected });
+
   return (
-    <div className="flat">
+    <div className={classes} onClick={() => handleSelect(id)}>
       <img className="flat-picture" alt="Flat" src={ imageUrl }/>
       <div className="flat-title">
         <strong>{ priceCurrency } {price}</strong>  - {name}
