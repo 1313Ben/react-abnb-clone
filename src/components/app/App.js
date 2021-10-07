@@ -1,7 +1,12 @@
 import './App.scss';
 import Flat from '../flat/Flat';
 import { useState, useEffect } from 'react';
+import ReactMapboxGl from 'react-mapbox-gl';
 
+const Map = ReactMapboxGl({
+  accessToken:
+    'TODO'
+});
 
 const API_URL = "https://raw.githubusercontent.com/lewagon/flats-boilerplate/master/flats.json";
 
@@ -19,9 +24,9 @@ const App = () => {
         setFlats(json)
       });
   }, [status])
-  // triggerhelper to fetch data -> everytime when status changes it will fetch
+  // triggerhelper to fetch data -> everytime when status changes it will trigger useEffect
   // Emptyarray enable run the useEffect only once, otherwise infinity loop without an array
-
+ 
   return (
     <div className="app">
       
@@ -34,11 +39,18 @@ const App = () => {
           })}
         </div>
 
-        <button onClick={() => setStatus(!status)}>Fetch FLATS!</button>
-        <div className="map">
+        <button onClick={() => setStatus(!status)}>
+          Fetch FLATS!
+          </button>
         </div>
 
-      </div>
+        <div className="map">
+          <Map
+            zoom={[14]}
+            center={[2.3522, 48.8566]}
+            containerStyle={{ height: '100vh', width: '100%' }}
+            style="mapbox://styles/mapbox/streets-v8" />
+        </div>
   </div>
   );
 }
