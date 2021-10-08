@@ -5,7 +5,7 @@ const Flat = ({ id, name, price, priceCurrency = 'EUR', imageUrl, handleSelect, 
   const classes = clsx({ flat: true, selected: selected });
 
   return (
-    <div className={classes} onClick={() => handleSelect(id)}>
+    <div className={classes} onMouseEnter={() => handleSelect(id)}>
       <img className="flat-picture" alt="Flat" src={ imageUrl }/>
       <div className="flat-title">
         <strong>{ priceCurrency } {price}</strong>  - {name}

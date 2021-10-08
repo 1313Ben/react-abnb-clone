@@ -4,6 +4,7 @@ import ReactMapboxGl from 'react-mapbox-gl';
 import './App.scss';
 import Flat from '../flat/Flat';
 import FlatMarker from '../flat_marker/FlatMarker';
+import Search from '../search/Search';
 
 const Map = ReactMapboxGl({
   accessToken: process.env.REACT_APP_MAPBOX_TOKEN
@@ -16,7 +17,9 @@ const App = () => {
   const [status, setStatus] = useState(false);
   const [center, setCenter] = useState([2.3522, 48.8566]);
   const [selectedFlat, setSelectedFlat] = useState({});
+  const [searchTxt, setSearchTxt] = useState('');
 
+  // get all flats
   useEffect(() => {
     fetch(API_URL)
       .then(data => data.json())
@@ -26,9 +29,10 @@ const App = () => {
         setFlats(json)
       });
   }, [status])
-  // triggerhelper to fetch data -> everytime when status changes it will trigger useEffect
-  // Emptyarray enable run the useEffect only once, otherwise infinity loop without an array
+  // [status] =>  triggerhelper to fetch data -> everytime when status changes it will trigger useEffect
+  // [] => Emptyarray enable run the useEffect only once, otherwise infinity loop without an array
  
+  // shows selected flat on the map
   const handleSelect = (id) => {
    // console.log (`FLAT ${id} SELECTED`)
     const newSelectedFlat = flats.find(flat => flat.id === id)
@@ -36,14 +40,25 @@ const App = () => {
     setCenter([newSelectedFlat.lng, newSelectedFlat.lat])
   }
 
+  // search for flats
+  const handleSearch = (text) => {
+    // console.log(text);
+    setSearchTxt(text);
+  }
+
+  // filtering the flats by search text
+  const filtered = flats.filter((flat) => {
+    return flat.name.match(new RegExp(searchTxt, 'i')); // 'i' is for case-insensitive 
+  })
+
   return (
     <div className="app">
       
       <div className="main">
-        <input className="search" />
+        <Search handleSearch={handleSearch}/>
         
         <div className="flats">
-          {flats.map((flat) => {
+          {filtered.map((flat) => {
             return (
               <Flat
                 key={flat.id} 
